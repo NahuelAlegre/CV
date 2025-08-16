@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Currículum de Nahuel Alegre</title>
+  <meta name="description" content="Curriculum Vitae de Nahuel Alegre, desarrollador web." />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#009688" />
+  <meta property="og:title" content="Currículum de Nahuel Alegre" />
+  <meta property="og:description" content="Curriculum Vitae de Nahuel Alegre, desarrollador web." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="" />
+  <meta property="og:image" content="/icon-512.png" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="prefetch" href="/src/data.js" as="script" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <button id="theme-toggle" aria-label="Cambiar tema">🌓</button>
+      <button id="accent-toggle" aria-label="Cambiar color de acento">🎨</button>
+    </nav>
+    <section id="hero">
+      <h1 id="nombre"></h1>
+      <p id="titulo"></p>
+      <div class="cta">
+        <button id="download-btn">Descargar PDF</button>
+        <div class="links">
+          <button id="email-copy" aria-label="Copiar email"></button>
+          <button id="phone-copy" aria-label="Copiar teléfono"></button>
+          <a id="linkedin-link" href="#" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
+        </div>
+      </div>
+    </section>
+  </header>
+  <main>
+    <section id="about" class="container">
+      <h2>Sobre mí</h2>
+      <p id="resumen"></p>
+    </section>
+    <section id="experience" class="container">
+      <h2>Experiencia</h2>
+      <ul id="experience-list"></ul>
+    </section>
+    <section id="education" class="container">
+      <h2>Educación</h2>
+      <div id="education-list"></div>
+    </section>
+    <section id="skills" class="container">
+      <h2>Habilidades</h2>
+      <input type="search" id="skill-search" aria-label="Buscar habilidades" placeholder="Buscar" />
+      <div id="skill-filters">
+        <button data-group="all" class="active">Todas</button>
+        <button data-group="front">Front</button>
+        <button data-group="backend">Backend</button>
+        <button data-group="db">BD</button>
+        <button data-group="ofimatica">Ofimática</button>
+      </div>
+      <ul id="skill-list"></ul>
+    </section>
+    <section id="languages" class="container">
+      <h2>Idiomas</h2>
+      <ul id="language-list"></ul>
+    </section>
+    <section id="contact" class="container">
+      <h2>Contacto</h2>
+      <div class="contact-buttons">
+        <a id="email-link" href="#" class="contact-btn">Email</a>
+        <a id="phone-link" href="#" class="contact-btn">Teléfono</a>
+      </div>
+      <form id="contact-form">
+        <label>Nombre<input type="text" name="name" required /></label>
+        <label>Email<input type="email" name="email" required /></label>
+        <label>Mensaje<textarea name="message" required></textarea></label>
+        <label><input type="checkbox" required /> Acepto el aviso de privacidad</label>
+        <button type="submit">Enviar</button>
+      </form>
+      <p class="privacy">Los datos se envían por correo. No se realiza seguimiento.</p>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; <span id="year"></span> <span id="footer-name"></span></p>
+  </footer>
+  <div id="toast" role="status" aria-live="polite" class="hidden"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
