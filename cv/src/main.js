@@ -7,6 +7,12 @@ const resumenEl = document.getElementById('resumen');
 const yearEl = document.getElementById('year');
 const footerNameEl = document.getElementById('footer-name');
 
+// visit counter
+const visitEl = document.getElementById('visit-count');
+const visits = Number(localStorage.getItem('visits') || 0) + 1;
+localStorage.setItem('visits', visits);
+if (visitEl) visitEl.textContent = visits;
+
 nombreEl.textContent = cvData.nombre;
 tituloEl.textContent = cvData.experiencia[0]?.rol || '';
 resumenEl.textContent = cvData.resumen;
@@ -19,6 +25,8 @@ const phoneLink = document.getElementById('phone-link');
 const emailCopy = document.getElementById('email-copy');
 const phoneCopy = document.getElementById('phone-copy');
 const linkedinLink = document.getElementById('linkedin-link');
+const menuToggle = document.getElementById('menu-toggle');
+const menu = document.getElementById('menu');
 
 emailLink.href = `mailto:${cvData.contacto.email}`;
 phoneLink.href = `tel:${cvData.contacto.telefono}`;
@@ -27,6 +35,8 @@ phoneLink.textContent = cvData.contacto.telefono;
 emailCopy.textContent = 'Copiar email';
 phoneCopy.textContent = 'Copiar tel';
 linkedinLink.href = cvData.contacto.linkedin;
+
+menuToggle.addEventListener('click', () => menu.classList.toggle('open'));
 
 // Copy to clipboard
 themesInit();
@@ -130,6 +140,47 @@ function nivelToPercent(nivel) {
   const map = { A1:20, A2:30, B1:40, B2:60, C1:80, C2:100 };
   return map[nivel] || 50;
 }
+
+// Projects
+const projectGrid = document.getElementById('project-grid');
+cvData.proyectos.forEach(p => {
+  const card = document.createElement('article');
+  card.className = 'project-card card';
+  card.innerHTML = `
+    <img src="${p.imagen}" alt="${p.titulo}" loading="lazy" />
+    <div class="card-content">
+      <h3>${p.titulo}</h3>
+      <p>${p.descripcion}</p>
+      <a href="${p.url}" target="_blank" rel="noopener">Ver proyecto</a>
+    </div>`;
+  projectGrid.appendChild(card);
+});
+
+// Testimonials
+const testimonialList = document.getElementById('testimonial-list');
+cvData.testimonios.forEach(t => {
+  const fig = document.createElement('figure');
+  fig.className = 'testimonial card';
+  fig.innerHTML = `<blockquote>“${t.comentario}”</blockquote><cite>${t.nombre} - ${t.rol}</cite>`;
+  testimonialList.appendChild(fig);
+});
+
+// Achievements
+const achievementList = document.getElementById('achievement-list');
+cvData.certificaciones.forEach(c => {
+  const li = document.createElement('li');
+  li.className = 'card';
+  li.innerHTML = `<strong>${c.titulo}</strong><br><small>${c.entidad} - ${c.anio}</small>`;
+  achievementList.appendChild(li);
+});
+
+// Interests
+const interestList = document.getElementById('interest-list');
+cvData.intereses.forEach(i => {
+  const li = document.createElement('li');
+  li.textContent = i;
+  interestList.appendChild(li);
+});
 
 // Contact form
 const form = document.getElementById('contact-form');

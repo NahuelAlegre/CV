@@ -39,5 +39,36 @@ export const cvData = {
     backend: [".NET"],
     db: ["SQL Server"],
     ofimatica: ["Word", "Excel", "PowerPoint", "Outlook"]
-  }
+  },
+  proyectos: [
+    {
+      titulo: "Gestor de Tareas",
+      descripcion: "Aplicación SPA para gestión de tareas y seguimiento.",
+      imagen: "https://via.placeholder.com/600x400?text=Proyecto+1",
+      url: "https://github.com/nalegre/proyecto1"
+    },
+    {
+      titulo: "API de Productos",
+      descripcion: "Servicio REST con .NET y SQL Server.",
+      imagen: "https://via.placeholder.com/600x400?text=Proyecto+2",
+      url: "https://github.com/nalegre/proyecto2"
+    }
+  ],
+  testimonios: [
+    {
+      nombre: "María Pérez",
+      rol: "Scrum Master",
+      comentario: "Profesional comprometido y proactivo."
+    },
+    {
+      nombre: "Juan Gómez",
+      rol: "Líder Técnico",
+      comentario: "Gran capacidad para resolver problemas y ayudar al equipo."
+    }
+  ],
+  certificaciones: [
+    { titulo: "Azure Fundamentals", entidad: "Microsoft", anio: 2023 },
+    { titulo: "Scrum Master", entidad: "Scrum.org", anio: 2022 }
+  ],
+  intereses: ["UX/UI", "Automatización", "IA", "Música"]
 };

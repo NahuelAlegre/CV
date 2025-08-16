@@ -20,8 +20,19 @@
 <body>
   <header>
     <nav>
-      <button id="theme-toggle" aria-label="Cambiar tema">🌓</button>
-      <button id="accent-toggle" aria-label="Cambiar color de acento">🎨</button>
+      <button id="menu-toggle" class="menu-toggle" aria-label="Menú">☰</button>
+      <ul id="menu" class="menu">
+        <li><a href="#about">Sobre mí</a></li>
+        <li><a href="#projects">Proyectos</a></li>
+        <li><a href="#experience">Experiencia</a></li>
+        <li><a href="#education">Educación</a></li>
+        <li><a href="#skills">Habilidades</a></li>
+        <li><a href="#contact">Contacto</a></li>
+      </ul>
+      <div class="switches">
+        <button id="theme-toggle" aria-label="Cambiar tema">🌓</button>
+        <button id="accent-toggle" aria-label="Cambiar color de acento">🎨</button>
+      </div>
     </nav>
     <section id="hero">
       <h1 id="nombre"></h1>
@@ -40,6 +51,10 @@
     <section id="about" class="container">
       <h2>Sobre mí</h2>
       <p id="resumen"></p>
+    </section>
+    <section id="projects" class="container">
+      <h2>Proyectos</h2>
+      <div id="project-grid"></div>
     </section>
     <section id="experience" class="container">
       <h2>Experiencia</h2>
@@ -65,6 +80,18 @@
       <h2>Idiomas</h2>
       <ul id="language-list"></ul>
     </section>
+    <section id="testimonials" class="container">
+      <h2>Testimonios</h2>
+      <div id="testimonial-list"></div>
+    </section>
+    <section id="achievements" class="container">
+      <h2>Logros y certificaciones</h2>
+      <ul id="achievement-list"></ul>
+    </section>
+    <section id="interests" class="container">
+      <h2>Intereses</h2>
+      <ul id="interest-list"></ul>
+    </section>
     <section id="contact" class="container">
       <h2>Contacto</h2>
       <div class="contact-buttons">
@@ -83,6 +110,7 @@
   </main>
   <footer>
     <p>&copy; <span id="year"></span> <span id="footer-name"></span></p>
+    <p class="visits">Visitas: <span id="visit-count"></span></p>
   </footer>
   <div id="toast" role="status" aria-live="polite" class="hidden"></div>
   <script type="module" src="/src/main.js"></script>
