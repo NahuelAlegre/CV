@@ -112,6 +112,25 @@ a:focus-visible {
 #hero .links {
   display: flex;
   gap: 0.5rem;
+=======
+#toast {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+#toast.show {
+  opacity: 1;
+}
+
+.hidden {
+  display: none;
 }
 
 section {
@@ -242,6 +261,8 @@ section.in-view {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+#skill-filters button.active {
+  outline: 2px solid var(--fg);
 }
 
 .language-bar {
@@ -328,6 +349,9 @@ footer {
   #accent-toggle,
   #download-btn,
   #toast {
+=======
+@media print {
+  nav, #theme-toggle, #accent-toggle, #download-btn, #toast {
     display: none !important;
   }
   body {
@@ -335,4 +359,3 @@ footer {
     color: #000;
   }
 }
-
