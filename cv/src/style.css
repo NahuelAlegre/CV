@@ -33,10 +33,26 @@ header, section, footer {
   padding: 1rem;
 }
 
+header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
 .container {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 1rem;
+}
+
+.container > * {
+  grid-column: 1 / -1;
 }
 
 @media (min-width: 768px) {
@@ -60,11 +76,43 @@ button {
   transition: background 0.3s;
 }
 
-button:focus-visible, a:focus-visible {
+button:focus-visible,
+a:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
+#hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 2rem 0;
+}
+
+#hero h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin: 0;
+}
+
+#hero p {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+#hero .cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+#hero .links {
+  display: flex;
+  gap: 0.5rem;
+=======
 #toast {
   position: fixed;
   bottom: 1rem;
@@ -106,6 +154,113 @@ section.in-view {
   font-size: 0.875rem;
 }
 
+#experience-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#experience-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+  border-left: 2px solid var(--accent);
+}
+
+#experience-list li::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 0.5rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.exp-item {
+  background: none;
+  color: inherit;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-weight: 600;
+}
+
+.exp-item time {
+  font-size: 0.875rem;
+  opacity: 0.7;
+}
+
+.exp-details {
+  margin-top: 0.5rem;
+}
+
+#education-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+#education-list article {
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+#skill-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+#skill-filters button {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 0.25rem 0.75rem;
+}
+
+#skill-filters button.active {
+  background: var(--accent);
+  color: #fff;
+  outline: none;
+}
+
+#skill-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+#skill-list li {
+  background: #e0e0e0;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+[data-theme="dark"] #skill-list li {
+  background: #424242;
+}
+
+#language-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+#language-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 #skill-filters button.active {
   outline: 2px solid var(--fg);
 }
@@ -124,6 +279,77 @@ section.in-view {
   border-radius: 4px;
 }
 
+.contact-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.contact-btn {
+  background: var(--accent);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+#contact-form {
+  display: grid;
+  gap: 1rem;
+}
+
+#contact-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+input,
+textarea {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent);
+}
+
+#toast {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+#toast.show {
+  opacity: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+@media print {
+  nav,
+  #theme-toggle,
+  #accent-toggle,
+  #download-btn,
+  #toast {
+=======
 @media print {
   nav, #theme-toggle, #accent-toggle, #download-btn, #toast {
     display: none !important;
