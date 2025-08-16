@@ -1,0 +1,8 @@
+cv/node_modules
+cv/dist
+cv/public/favicon.ico
+cv/public/icon-192.png
+cv/public/icon-512.png
+
+# miscellaneous
+.DS_Store
