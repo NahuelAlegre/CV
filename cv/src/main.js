@@ -1,265 +1,195 @@
-import { cvData } from './data.js';
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
 
-// Populate basic info
-const nombreEl = document.getElementById('nombre');
-const tituloEl = document.getElementById('titulo');
-const resumenEl = document.getElementById('resumen');
-const yearEl = document.getElementById('year');
-const footerNameEl = document.getElementById('footer-name');
-
-// visit counter
-const visitEl = document.getElementById('visit-count');
-const visits = Number(localStorage.getItem('visits') || 0) + 1;
-localStorage.setItem('visits', visits);
-if (visitEl) visitEl.textContent = visits;
-
-nombreEl.textContent = cvData.nombre;
-tituloEl.textContent = cvData.experiencia[0]?.rol || '';
-resumenEl.textContent = cvData.resumen;
-yearEl.textContent = new Date().getFullYear();
-footerNameEl.textContent = cvData.nombre;
-
-// Hero links
-const emailLink = document.getElementById('email-link');
-const phoneLink = document.getElementById('phone-link');
-const emailCopy = document.getElementById('email-copy');
-const phoneCopy = document.getElementById('phone-copy');
-const linkedinLink = document.getElementById('linkedin-link');
-const menuToggle = document.getElementById('menu-toggle');
-const menu = document.getElementById('menu');
-
-emailLink.href = `mailto:${cvData.contacto.email}`;
-phoneLink.href = `tel:${cvData.contacto.telefono}`;
-emailLink.textContent = cvData.contacto.email;
-phoneLink.textContent = cvData.contacto.telefono;
-emailCopy.textContent = 'Copiar email';
-phoneCopy.textContent = 'Copiar tel';
-linkedinLink.href = cvData.contacto.linkedin;
-
-menuToggle.addEventListener('click', () => menu.classList.toggle('open'));
-
-// Copy to clipboard
-themesInit();
-function copy(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    showToast('Copiado al portapapeles');
-  });
-}
-emailCopy.addEventListener('click', () => copy(cvData.contacto.email));
-phoneCopy.addEventListener('click', () => copy(cvData.contacto.telefono));
-
-// Experience timeline
-const expList = document.getElementById('experience-list');
-cvData.experiencia.forEach((exp, idx) => {
-  const li = document.createElement('li');
-  const btn = document.createElement('button');
-  btn.className = 'exp-item';
-  btn.setAttribute('aria-expanded', 'false');
-  btn.innerHTML = `<span>${exp.empresa} - ${exp.rol}</span> <time>${exp.inicio} - ${exp.fin}</time>`;
-  const details = document.createElement('div');
-  details.className = 'exp-details';
-  details.hidden = true;
-  const respList = document.createElement('ul');
-  exp.responsabilidades.forEach(r => {
-    const rli = document.createElement('li');
-    rli.textContent = r;
-    respList.appendChild(rli);
-  });
-  const chips = document.createElement('div');
-  chips.className = 'chips';
-  exp.tecnologias.forEach(t => {
-    const chip = document.createElement('span');
-    chip.textContent = t;
-    chips.appendChild(chip);
-  });
-  details.appendChild(respList);
-  details.appendChild(chips);
-  li.appendChild(btn);
-  li.appendChild(details);
-  expList.appendChild(li);
-  const toggle = () => {
-    const expanded = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!expanded));
-    details.hidden = expanded;
-  };
-  btn.addEventListener('click', toggle);
-  btn.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      toggle();
-    }
-  });
-});
-
-// Education
-const eduList = document.getElementById('education-list');
-cvData.educacion.forEach(edu => {
-  const card = document.createElement('article');
-  card.innerHTML = `<h3>${edu.institucion}</h3><p>${edu.titulo} (${edu.estado})</p><p>${edu.inicio} - ${edu.fin}</p>`;
-  eduList.appendChild(card);
-});
-
-// Skills with filters
-const skillSearch = document.getElementById('skill-search');
-const skillFilters = document.querySelectorAll('#skill-filters button');
-const skillList = document.getElementById('skill-list');
-const allSkills = [];
-Object.entries(cvData.habilidades).forEach(([group, items]) => {
-  items.forEach(name => allSkills.push({ group, name }));
-});
-let currentGroup = 'all';
-function renderSkills() {
-  const term = skillSearch.value.toLowerCase();
-  skillList.innerHTML = '';
-  allSkills.filter(s => (currentGroup === 'all' || s.group === currentGroup) && s.name.toLowerCase().includes(term))
-    .forEach(s => {
-      const li = document.createElement('li');
-      li.textContent = s.name;
-      skillList.appendChild(li);
-    });
-}
-skillSearch.addEventListener('input', renderSkills);
-skillFilters.forEach(btn => {
-  btn.addEventListener('click', () => {
-    currentGroup = btn.dataset.group;
-    skillFilters.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderSkills();
-  });
-});
-renderSkills();
-
-// Languages
-const langList = document.getElementById('language-list');
-cvData.idiomas.forEach(lang => {
-  const li = document.createElement('li');
-  li.innerHTML = `<span>${lang.idioma} (${lang.nivel})</span><div class="language-bar"><span style="width:${nivelToPercent(lang.nivel)}%"></span></div><small>${lang.detalle}</small>`;
-  langList.appendChild(li);
-});
-function nivelToPercent(nivel) {
-  const map = { A1:20, A2:30, B1:40, B2:60, C1:80, C2:100 };
-  return map[nivel] || 50;
-}
-
-// Projects
-const projectGrid = document.getElementById('project-grid');
-cvData.proyectos.forEach(p => {
-  const card = document.createElement('article');
-  card.className = 'project-card card';
-  card.innerHTML = `
-    <img src="${p.imagen}" alt="${p.titulo}" loading="lazy" />
-    <div class="card-content">
-      <h3>${p.titulo}</h3>
-      <p>${p.descripcion}</p>
-      <a href="${p.url}" target="_blank" rel="noopener">Ver proyecto</a>
-    </div>`;
-  projectGrid.appendChild(card);
-});
-
-// Testimonials
-const testimonialList = document.getElementById('testimonial-list');
-cvData.testimonios.forEach(t => {
-  const fig = document.createElement('figure');
-  fig.className = 'testimonial card';
-  fig.innerHTML = `<blockquote>“${t.comentario}”</blockquote><cite>${t.nombre} - ${t.rol}</cite>`;
-  testimonialList.appendChild(fig);
-});
-
-// Achievements
-const achievementList = document.getElementById('achievement-list');
-cvData.certificaciones.forEach(c => {
-  const li = document.createElement('li');
-  li.className = 'card';
-  li.innerHTML = `<strong>${c.titulo}</strong><br><small>${c.entidad} - ${c.anio}</small>`;
-  achievementList.appendChild(li);
-});
-
-// Interests
-const interestList = document.getElementById('interest-list');
-cvData.intereses.forEach(i => {
-  const li = document.createElement('li');
-  li.textContent = i;
-  interestList.appendChild(li);
-});
-
-// Contact form
-const form = document.getElementById('contact-form');
-form.addEventListener('submit', e => {
-  e.preventDefault();
-  showToast('Mensaje enviado');
-  form.reset();
-});
-
-// Theme and accent toggles
-function themesInit() {
-  const themeToggle = document.getElementById('theme-toggle');
-  const accentToggle = document.getElementById('accent-toggle');
-  const storedTheme = localStorage.getItem('theme') || 'light';
-  const storedAccent = localStorage.getItem('accent') || 'teal';
-  document.documentElement.setAttribute('data-theme', storedTheme);
-  document.documentElement.setAttribute('data-accent', storedAccent);
-  themeToggle.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'light' ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-  });
-  const accents = ['teal', 'orange', 'blue'];
-  accentToggle.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-accent');
-    const idx = accents.indexOf(current);
-    const next = accents[(idx + 1) % accents.length];
-    document.documentElement.setAttribute('data-accent', next);
-    localStorage.setItem('accent', next);
-  });
-}
-
-// Intersection Observer animations
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('in-view');
-      observer.unobserve(entry.target);
-    }
-  });
-});
-document.querySelectorAll('section').forEach(sec => observer.observe(sec));
-
-// Download PDF
-const downloadBtn = document.getElementById('download-btn');
-downloadBtn.addEventListener('click', () => window.print());
-
-// Toast helper
-function showToast(text) {
-  const toast = document.getElementById('toast');
-  toast.textContent = text;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2000);
-}
-
-// Service worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js');
-  });
-}
-
-// JSON-LD
-const ld = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: cvData.nombre,
-  email: cvData.contacto.email,
-  telephone: cvData.contacto.telefono,
-  sameAs: [cvData.contacto.linkedin],
-  jobTitle: cvData.experiencia[0]?.rol,
-  worksFor: {
-    '@type': 'Organization',
-    name: cvData.experiencia[0]?.empresa
-  }
+const ui = {
+  level: document.getElementById('level'),
+  health: document.getElementById('health'),
+  damage: document.getElementById('damage'),
+  coins: document.getElementById('coins'),
+  score: document.getElementById('score'),
+  status: document.getElementById('status')
 };
-const ldScript = document.createElement('script');
-ldScript.type = 'application/ld+json';
-ldScript.textContent = JSON.stringify(ld);
-document.head.appendChild(ldScript);
 
+const W = canvas.width;
+const H = canvas.height;
+const lanes = [W * 0.35, W * 0.5, W * 0.65];
+
+const state = {
+  t: 0,
+  speed: 3.2,
+  lane: 1,
+  x: lanes[1],
+  y: H - 80,
+  health: 1,
+  damage: 1,
+  coins: 0,
+  score: 0,
+  level: 1,
+  dead: false,
+  rows: [],
+  bullets: [],
+  enemyBullets: [],
+  touchX: null
+};
+
+function spawnRow(y = -120) {
+  const roll = Math.random();
+  if (roll < 0.45) {
+    const goodLane = Math.floor(Math.random() * 3);
+    state.rows.push({ type: 'gates', y, goodLane, badPenalty: 0.6, goodBoost: 0.5 });
+  } else {
+    const occupied = new Set([Math.floor(Math.random() * 3), Math.floor(Math.random() * 3)]);
+    state.rows.push({ type: 'enemies', y, occupied: [...occupied] });
+  }
+}
+for (let i = 0; i < 5; i++) spawnRow(-i * 180);
+
+function shootPlayer() {
+  state.bullets.push({ x: state.x, y: state.y - 25, vy: -8, dmg: state.damage });
+}
+setInterval(() => !state.dead && shootPlayer(), 350);
+
+function moveLane(dir) {
+  state.lane = Math.max(0, Math.min(2, state.lane + dir));
+}
+addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a') moveLane(-1);
+  if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd') moveLane(1);
+  if (e.key.toLowerCase() === 'r' && state.dead) location.reload();
+});
+canvas.addEventListener('pointerdown', e => state.touchX = e.clientX);
+canvas.addEventListener('pointermove', e => {
+  if (state.touchX == null) return;
+  const dx = e.clientX - state.touchX;
+  if (Math.abs(dx) > 25) {
+    moveLane(dx > 0 ? 1 : -1);
+    state.touchX = e.clientX;
+  }
+});
+canvas.addEventListener('pointerup', () => state.touchX = null);
+
+function update() {
+  if (state.dead) return;
+  state.t += 1;
+  state.x += (lanes[state.lane] - state.x) * 0.2;
+  state.score += 1;
+
+  for (const row of state.rows) {
+    row.y += state.speed;
+    if (row.type === 'enemies' && Math.random() < 0.03) {
+      row.occupied.forEach(l => {
+        state.enemyBullets.push({ x: lanes[l], y: row.y + 8, vy: 5 });
+      });
+    }
+    if (row.y > state.y - 40 && row.y < state.y + 8) {
+      if (row.type === 'gates') {
+        if (state.lane === row.goodLane) {
+          state.damage += row.goodBoost;
+          state.coins += 2;
+          ui.status.textContent = 'Blue gate! Damage and ammo boosted.';
+        } else {
+          state.health = Math.max(0, state.health - row.badPenalty);
+          ui.status.textContent = 'Red gate penalty!';
+        }
+        row.hit = true;
+      }
+      if (row.type === 'enemies' && row.occupied.includes(state.lane)) {
+        state.health = Math.max(0, state.health - 0.35);
+        ui.status.textContent = 'You ran into enemies!';
+      }
+    }
+  }
+
+  state.rows = state.rows.filter(r => r.y < H + 80);
+  if (state.rows.length < 6) spawnRow();
+
+  state.bullets.forEach(b => b.y += b.vy);
+  state.enemyBullets.forEach(b => b.y += b.vy);
+  state.bullets = state.bullets.filter(b => b.y > -40);
+  state.enemyBullets = state.enemyBullets.filter(b => b.y < H + 40);
+
+  state.enemyBullets.forEach(b => {
+    if (Math.abs(b.x - state.x) < 16 && Math.abs(b.y - state.y) < 18) {
+      state.health = Math.max(0, state.health - 0.15);
+      b.y = H + 200;
+    }
+  });
+
+  if (state.health <= 0) {
+    state.dead = true;
+    ui.status.textContent = 'Game over. Press R to restart.';
+  }
+
+  state.level = 1 + Math.floor(state.score / 1000);
+  state.speed = 3.2 + state.level * 0.15;
+
+  ui.level.textContent = state.level;
+  ui.health.textContent = state.health.toFixed(1);
+  ui.damage.textContent = state.damage.toFixed(1);
+  ui.coins.textContent = state.coins;
+  ui.score.textContent = state.score;
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  ctx.fillStyle = '#e5b98d';
+  ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = '#453b55';
+  ctx.fillRect(W * 0.2, 0, W * 0.6, H);
+  ctx.strokeStyle = '#7e7391';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(W * 0.2, 0, W * 0.6, H);
+
+  ctx.setLineDash([16, 14]);
+  ctx.strokeStyle = '#978ca9';
+  ctx.beginPath();
+  ctx.moveTo(W * 0.5, 0);
+  ctx.lineTo(W * 0.5, H);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  for (const row of state.rows) {
+    if (row.type === 'gates') {
+      for (let l = 0; l < 3; l++) {
+        ctx.fillStyle = l === row.goodLane ? '#22a8ff' : '#ff3848';
+        ctx.fillRect(lanes[l] - 30, row.y, 60, 54);
+      }
+    } else {
+      row.occupied.forEach(l => {
+        ctx.fillStyle = '#d6273d';
+        ctx.beginPath();
+        ctx.arc(lanes[l], row.y + 20, 13, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+  }
+
+  ctx.fillStyle = '#4fc3ff';
+  ctx.beginPath();
+  ctx.arc(state.x, state.y - 12, 9, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#2f3f5c';
+  ctx.fillRect(state.x - 8, state.y - 8, 16, 24);
+
+  ctx.fillStyle = '#f4e16f';
+  state.bullets.forEach(b => ctx.fillRect(b.x - 2, b.y, 4, 10));
+  ctx.fillStyle = '#ff6767';
+  state.enemyBullets.forEach(b => ctx.fillRect(b.x - 2, b.y, 4, 9));
+
+  if (state.dead) {
+    ctx.fillStyle = 'rgba(0,0,0,.45)';
+    ctx.fillRect(0,0,W,H);
+    ctx.fillStyle = '#fff';
+    ctx.font = '700 34px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('GAME OVER', W/2, H/2);
+  }
+}
+
+function frame() {
+  update();
+  draw();
+  requestAnimationFrame(frame);
+}
+frame();

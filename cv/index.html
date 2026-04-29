@@ -1,118 +1,29 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Currículum de Nahuel Alegre</title>
-  <meta name="description" content="Curriculum Vitae de Nahuel Alegre, desarrollador web." />
-  <link rel="icon" href="/favicon.ico" />
-  <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#009688" />
-  <meta property="og:title" content="Currículum de Nahuel Alegre" />
-  <meta property="og:description" content="Curriculum Vitae de Nahuel Alegre, desarrollador web." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="" />
-  <meta property="og:image" content="/icon-512.png" />
-  <meta name="twitter:card" content="summary" />
-  <link rel="prefetch" href="/src/data.js" as="script" />
+  <title>Hyper-Casual Gate Runner</title>
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
-  <header>
-    <nav>
-      <button id="menu-toggle" class="menu-toggle" aria-label="Menú">☰</button>
-      <ul id="menu" class="menu">
-        <li><a href="#about">Sobre mí</a></li>
-        <li><a href="#projects">Proyectos</a></li>
-        <li><a href="#experience">Experiencia</a></li>
-        <li><a href="#education">Educación</a></li>
-        <li><a href="#skills">Habilidades</a></li>
-        <li><a href="#contact">Contacto</a></li>
-      </ul>
-      <div class="switches">
-        <button id="theme-toggle" aria-label="Cambiar tema">🌓</button>
-        <button id="accent-toggle" aria-label="Cambiar color de acento">🎨</button>
-      </div>
-    </nav>
-    <section id="hero">
-      <h1 id="nombre"></h1>
-      <p id="titulo"></p>
-      <div class="cta">
-        <button id="download-btn">Descargar PDF</button>
-        <div class="links">
-          <button id="email-copy" aria-label="Copiar email"></button>
-          <button id="phone-copy" aria-label="Copiar teléfono"></button>
-          <a id="linkedin-link" href="#" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
-        </div>
-      </div>
-    </section>
-  </header>
-  <main>
-    <section id="about" class="container">
-      <h2>Sobre mí</h2>
-      <p id="resumen"></p>
-    </section>
-    <section id="projects" class="container">
-      <h2>Proyectos</h2>
-      <div id="project-grid"></div>
-    </section>
-    <section id="experience" class="container">
-      <h2>Experiencia</h2>
-      <ul id="experience-list"></ul>
-    </section>
-    <section id="education" class="container">
-      <h2>Educación</h2>
-      <div id="education-list"></div>
-    </section>
-    <section id="skills" class="container">
-      <h2>Habilidades</h2>
-      <input type="search" id="skill-search" aria-label="Buscar habilidades" placeholder="Buscar" />
-      <div id="skill-filters">
-        <button data-group="all" class="active">Todas</button>
-        <button data-group="front">Front</button>
-        <button data-group="backend">Backend</button>
-        <button data-group="db">BD</button>
-        <button data-group="ofimatica">Ofimática</button>
-      </div>
-      <ul id="skill-list"></ul>
-    </section>
-    <section id="languages" class="container">
-      <h2>Idiomas</h2>
-      <ul id="language-list"></ul>
-    </section>
-    <section id="testimonials" class="container">
-      <h2>Testimonios</h2>
-      <div id="testimonial-list"></div>
-    </section>
-    <section id="achievements" class="container">
-      <h2>Logros y certificaciones</h2>
-      <ul id="achievement-list"></ul>
-    </section>
-    <section id="interests" class="container">
-      <h2>Intereses</h2>
-      <ul id="interest-list"></ul>
-    </section>
-    <section id="contact" class="container">
-      <h2>Contacto</h2>
-      <div class="contact-buttons">
-        <a id="email-link" href="#" class="contact-btn">Email</a>
-        <a id="phone-link" href="#" class="contact-btn">Teléfono</a>
-      </div>
-      <form id="contact-form">
-        <label>Nombre<input type="text" name="name" required /></label>
-        <label>Email<input type="email" name="email" required /></label>
-        <label>Mensaje<textarea name="message" required></textarea></label>
-        <label><input type="checkbox" required /> Acepto el aviso de privacidad</label>
-        <button type="submit">Enviar</button>
-      </form>
-      <p class="privacy">Los datos se envían por correo. No se realiza seguimiento.</p>
-    </section>
+  <main class="game-shell">
+    <header class="hud">
+      <div class="hud-pill">Level <strong id="level">1</strong></div>
+      <div class="hud-pill">Health <strong id="health">1.0</strong></div>
+      <div class="hud-pill">Damage <strong id="damage">1.0</strong></div>
+      <div class="hud-pill">Coins <strong id="coins">0</strong></div>
+      <div class="hud-pill">Score <strong id="score">0</strong></div>
+    </header>
+
+    <canvas id="game" width="420" height="760" aria-label="Gate runner game canvas"></canvas>
+
+    <div class="controls">
+      <p>Move: <kbd>←</kbd><kbd>→</kbd> or <kbd>A</kbd><kbd>D</kbd> • Restart: <kbd>R</kbd></p>
+      <p id="status">Choose blue gates, avoid red enemies and projectiles.</p>
+    </div>
   </main>
-  <footer>
-    <p>&copy; <span id="year"></span> <span id="footer-name"></span></p>
-    <p class="visits">Visitas: <span id="visit-count"></span></p>
-  </footer>
-  <div id="toast" role="status" aria-live="polite" class="hidden"></div>
+
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>
